@@ -1,4 +1,4 @@
-# AzureRM Azure DNS Private Resolver Terraform module
+# Azure DNS Private Resolver Terraform module
 
 Terraform module which creates Azure DNS Private Resolver resources on Azure.
 
@@ -15,7 +15,7 @@ Terraform 1.5.6 and newer.
 
 ```hcl
 module "private-resolver" {
-  source               = "jsathler/dns-private-resolver/azurerm"
+  source              = "jsathler/dns-private-resolver/azurerm"
   name                = "private-resolver"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
