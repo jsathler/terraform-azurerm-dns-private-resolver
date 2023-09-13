@@ -37,12 +37,12 @@ module "private-resolver" {
         prd-vnet = module.spoke-vnet.vnet_id
       }
       rules = {
-        "demo-local" = {
-          domain_name        = "demo.local."
+        "example-local" = {
+          domain_name        = "example.local."
           target_dns_servers = ["10.1.1.1", "10.1.1.2"]
         }
-        "demo-net" = {
-          domain_name        = "demo.net."
+        "example-net" = {
+          domain_name        = "example.net."
           target_dns_servers = ["192.168.1.1", "192.168.1.2"]
         }
       }

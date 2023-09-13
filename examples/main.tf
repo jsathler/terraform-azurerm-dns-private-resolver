@@ -9,12 +9,12 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "default" {
-  name     = "dnsprivateresolver-demo-rg"
+  name     = "dnsprivateresolver-example-rg"
   location = local.location
 }
 
 module "hub-vnet" {
-  source              = "../../vnet"
+  source              = "jsathler/network/azurerm"
   name                = "hub"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
@@ -36,12 +36,19 @@ module "hub-vnet" {
 }
 
 module "spoke-vnet" {
-  source              = "../../vnet"
+  source              = "jsathler/network/azurerm"
   name                = "spoke"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
 
   address_space = [local.spoke_subnet]
+
+  subnets = {
+    default = {
+      address_prefixes   = [cidrsubnet(local.spoke_subnet, 10, 0)]
+      nsg_create_default = false
+    }
+  }
 }
 
 module "private-resolver" {
@@ -67,12 +74,12 @@ module "private-resolver" {
         prd-vnet = module.spoke-vnet.vnet_id
       }
       rules = {
-        "demo-local" = {
-          domain_name        = "demo.local."
+        "example-local" = {
+          domain_name        = "example.local."
           target_dns_servers = ["10.1.1.1", "10.1.1.2"]
         }
-        "demo-net" = {
-          domain_name        = "demo.net."
+        "example-net" = {
+          domain_name        = "example.net."
           target_dns_servers = ["192.168.1.1", "192.168.1.2"]
         }
       }
